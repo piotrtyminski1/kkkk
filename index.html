@@ -1889,7 +1889,7 @@
         <summary>Skala karty i liczenie OVR <span>+</span></summary>
         <div class="scale-content">
           <p><strong>OVR = 65% WAGA + 35% DYSCYPLINA.</strong> Waga 61,5 kg zaczyna od 40 pkt, a 57,0 kg daje 100 pkt. Wynik pomiędzy nimi rośnie liniowo.</p>
-          <p>Dyscyplina jest zdobywana stopniowo przez ruchome 14 dni i ma trzy równe składniki: zero cukru, maksymalnie 2 ślimaki oraz minimum 2 treningi w każdym 7-dniowym okresie. Zielone statystyki dnia pozostają oczekujące i zostają zaliczone dopiero po wpisaniu wagi następnego ranka. Cukier zeruje część cukrową danego tygodnia, a trzeci i każdy następny ślimak zaczyna obniżać część ślimakową. Jeden trening realizuje połowę tygodniowego celu treningowego, dwa lub więcej realizują cały cel. Pełne 100 punktów można zdobyć po 14 zaliczonych dniach.</p>
+          <p>Dyscyplina jest zdobywana stopniowo przez ruchome 14 dni i ma trzy równe składniki: zero cukru, maksymalnie 2 ślimaki oraz minimum 2 treningi w każdym 7-dniowym okresie. Cukier i ślimak zostają zaliczone dopiero po wpisaniu wagi następnego ranka. Trening zmienia dyscyplinę natychmiast po zaznaczeniu. Cukier zeruje część cukrową danego tygodnia, a trzeci i każdy następny ślimak zaczyna obniżać część ślimakową. Jeden trening realizuje połowę tygodniowego celu treningowego, dwa lub więcej realizują cały cel. Pełne 100 punktów można zdobyć po 14 zaliczonych dniach.</p>
           <div class="tier-list">
             <div class="tier-chip common">Czarna<br>0–49</div>
             <div class="tier-chip bronze">Brązowa<br>50–69</div>
@@ -2218,7 +2218,7 @@
           const snailCount = availableDays.filter(date => rowByDate.get(date)?.snail).length;
           const trainingCount = new Set(
             trainings
-              .filter(entry => availableDays.includes(entry.date))
+              .filter(entry => weekDays.includes(entry.date))
               .map(entry => entry.date)
           ).size;
           const elapsedQuality = availableDays.length / 7;
@@ -2261,7 +2261,7 @@
         return clamp(Math.round(40 + ((BASE_WEIGHT - measured) / (BASE_WEIGHT - GOAL_WEIGHT)) * 60), 0, 100);
       }
 
-      function currentScore(endDate = activeStatDateKey()) {
+      function currentScore(endDate = todayKey()) {
         const weight = weightAverage7(endDate);
         const discipline = disciplineBreakdown(endDate).total;
         const weightPoints = weightScore(weight);
@@ -3142,7 +3142,7 @@
           return;
         }
         const score = currentScore();
-        const date = activeStatDateKey();
+        const date = todayKey();
         const snapshot = {
           id: date,
           date,
